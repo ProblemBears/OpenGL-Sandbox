@@ -26,19 +26,28 @@ int main(void)
         std::cout << "Error" << std::endl;
 
     std::cout << glGetString(GL_VERSION) << std::endl;
+
+    /*STARTOF: Vertex Buffers and Drawing a Triangle (shouldn't really implement a triangle)*/
+    float positions[6] = {
+        -0.5f, -0.5f,
+         0.0f,  0.5f,
+         0.5f, -0.5f
+    };
+
+    unsigned int buffer;
+    glGenBuffers(1, &buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+
+    /*ENDOF: Vertex Buffers and Drawing a Triangle*/
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
-        /*Legacy OpenGL: To make a simple Triangle*/
-        glBegin(GL_TRIANGLES);
-        glVertex2f(-0.5f, -0.5f); 
-        glVertex2f(0.0f, 0.5f);
-        glVertex2f(0.5f, -0.5f);
-        glEnd();
-
+        /*Draw Call for our Modern OpenGL buffer: here we use glDrawArrays() since we don't have an index buffer*/
+        glDrawArrays(GL_TRIANGLES, 0, 3);
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
